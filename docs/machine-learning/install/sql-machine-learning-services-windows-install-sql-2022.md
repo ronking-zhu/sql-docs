@@ -159,6 +159,25 @@ Beginning with [!INCLUDE [sssql22-md](../../includes/sssql22-md.md)], runtimes f
     icacls "C:\Program Files\Python310\Lib\site-packages" /grant "NT Service\MSSQLLAUNCHPAD":(OI)(CI)RX /T
     icacls "C:\Program Files\Python310\Lib\site-packages" /grant *S-1-15-2-1:(OI)(CI)RX /T
     ```
+##### Install Python runtime offline
+If your machine don't have Internet connection, then you can consider this option. 
+1. Find a machine that having Internet connection, then install the same Python version as the target machine that don't have Internect connection on the location (C:\Program Files\Python310). 
+2. Download all the required Python packages we need. There will be additional packages downloaded named with pytz, tzdata, six. Also download the revoscalepy from https://aka.ms/sqlml/python3.10/windows/revoscalepy-10.0.1-py3-none-any.whl .
+```cmd
+cd C:\Program Files\Python310
+Python -m pip download pip download dill
+Python -m pip download pip download numpy==1.22.0
+Python -m pip download pip download pandas
+Python -m pip download pip download patsy
+Python -m pip download pip python-dateutil
+```
+3. Copy all the packages to the path (for example c:\temp)
+4. Install Python 3.10 to the location C:\Program Files\Python310. 
+5. Install all those packages together to resolve the dependency issue. 
+```cmd
+cd C:\Program Files\Python310
+python -m pip install -t "C:\Program Files\Python310\Lib\site-packages" c:\temp\pandas-2.0.2-cp310-cp310-win_amd64.whl c:\temp\numpy-1.22.0-cp310-cp310-win_amd64.whl c:\temp\patsy-0.5.3-py2.py3-none-any.whl c:\temp\python_dateutil-2.8.2-py2.py3-none-any.whl c:\temp\pytz-2023.3-py2.py3-none-any.whl c:\temp\tzdata-2023.3-py2.py3-none-any.whl c:\temp\six-1.16.0-py2.py3-none-any.whl c:\temp\revoscalepy-10.0.1-py3-none-any.whl c:\temp\dill-0.3.6-py3-none-any.whl
+```
 
 #### Configure Python runtime with SQL Server
 
